@@ -12,6 +12,8 @@ jobs:
         with:
           node-version: 14
           cache: npm
+      - name: Upgrade npm
+        run: npm install -g npm
       - name: Install
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
