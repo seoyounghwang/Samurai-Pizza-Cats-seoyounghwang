@@ -14,8 +14,8 @@ jobs:
           cache: npm
       - name: Install
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
-          yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+          npm ci --prefer-offline --no-optional
       - name: Format check
         run: npm run format:check
       - name: Lint
