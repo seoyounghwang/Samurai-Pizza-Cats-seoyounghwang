@@ -21,6 +21,6 @@ jobs:
       - name: Lint
         run: npm run lint
       - name: Test Server
-        run: 'cd packages/server && npm test'
+        run: 'cd packages/server && npm run test'
       - name: Test Client
-        run: 'cd packages/client && npm test'
+        run: 'cd packages/client && npm run test'
