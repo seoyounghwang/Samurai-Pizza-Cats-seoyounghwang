@@ -12,7 +12,7 @@ node_modules
 # misc
 .DS_Store
 
-yarn-debug.log*
+npm-debug.log*
 
 .eslintcache
 

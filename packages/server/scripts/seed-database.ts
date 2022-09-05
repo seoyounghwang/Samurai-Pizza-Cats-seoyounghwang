@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb';
-import { SeedPizza, pizzas, SeedTopping, toppings } from './initial-data';
+import { SeedPizza, toppings, pizzas, SeedTopping } from './initial-data';
 
 require('dotenv').config();
 
@@ -37,6 +37,7 @@ const seedCollection = async (collectionName: string, data: SeedPizza[] | SeedTo
 (async (): Promise<void> => {
   try {
     await seedCollection('pizzas', pizzas);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await seedCollection('toppings', toppings);
   } catch (error) {
     console.log(error);

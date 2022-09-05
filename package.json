@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.6.9",
+    "fsevents": "^1.2.11",
+    "graphql": "^15.8.0",
     "typescript": "^4.4.2"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-jsx": "^7.18.6",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "@typescript-eslint/parser": "^4.30.0",
     "concurrently": "^5.3.0",
@@ -14,27 +18,31 @@
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0"
   },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.17.0"
+  },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "install:all": "yarn && cd packages/client && yarn && cd ../server && yarn",
-    "start": "concurrently \"yarn workspace client start\" \"yarn workspace server start\"",
-    "server:dev": "cd packages/server && yarn start",
-    "client:dev": "cd packages/client && yarn start",
-    "generate:types": "cd packages/server && yarn generate:types",
-    "seed:database": "cd packages/server && yarn seed:database",
+    "install:all": "npm install && cd packages/client && npm install && cd ../server && npm install",
+    "start": "concurrently \"cd packages/client && npm run start\" \"cd packages/server && npm run start\"",
+    "server:dev": "cd packages/server && npm start",
+    "client:dev": "cd packages/client && npm start",
+    "generate:types": "cd packages/server && npm run generate:types",
+    "seed:database": "cd packages/server && npm run seed:database",
     "lint": "eslint \"**/*.{ts,js}\" --cache --fix",
     "format": "prettier --write \"**/*.{ts,js,json,graphql,gql,yaml,yml,md}\"",
     "format:check": "prettier --check \"**/*.{ts,js,json,graphql,gql,yaml,yml,md}\"",
     "prepare": "husky install",
-    "test": "cd packages/server && yarn test && cd ../client && yarn test --watchAll"
+    "test": "cd packages/server && npm test && cd ../client && npm test --watchAll"
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
-      "yarn generate:types",
-      "yarn format",
-      "yarn lint",
+      "npm run generate:types",
+      "npm run format",
+      "npm run lint",
       "git add ."
     ],
     "*.js": "eslint --cache --fix",

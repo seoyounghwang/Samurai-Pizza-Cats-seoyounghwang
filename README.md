@@ -23,16 +23,16 @@
 
 ## running the code:
 
-1. Run `yarn install:all` to install dependencies
-1. Run `docker-compose up` to start a local mongo database instance in a docker container
-1. Run `yarn seed:database` to seed your local database
-1. Run `yarn start` in the root folder to start the client and server in parallel.
+1. Run `npm run install:all` to install dependencies
+2. Run `docker-compose up` to start a local mongo database instance in a docker container
+3. Run `npm run seed:database` to seed your local database
+4. Run `npm start` in the root folder to start the client and server in parallel.
 
-Note: Alternatively, you can run `yarn start` for the client and server in separate terminals
+Note: Alternatively, you can run `npm start` for the client and server in separate terminals
 
 ## Server Notes
 
-- Every time you update the graphql schema, you will need to `yarn generate:types`
+- Every time you update the graphql schema, you will need to `npm run generate:types`
 
 ## Client Notes
 

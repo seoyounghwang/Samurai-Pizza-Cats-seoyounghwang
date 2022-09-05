@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../../lib/test/renderWithProviders';
 import { createTestTopping } from '../../../lib/test/helper/topping';
 import ToppingItem, { ToppingItemProps } from '../ToppingItem';
+import { act } from 'react-dom/test-utils';
 
 describe('ToppingItem', () => {
   const renderToppingList = (props: ToppingItemProps) => {
@@ -33,7 +34,7 @@ describe('ToppingItem', () => {
   test('should call handleOpen when the modify button is clicked', async () => {
     const { $getModifyButton } = renderToppingList(props);
 
-    userEvent.click($getModifyButton());
+    act(() => userEvent.click($getModifyButton()));
 
     expect(props.handleOpen).toHaveBeenCalledTimes(1);
   });
