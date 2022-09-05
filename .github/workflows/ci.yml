@@ -16,8 +16,6 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
           npm ci --prefer-offline --no-optional
-      - name: Build
-        run: npm run build
       - name: Format check
         run: npm run format:check
       - name: Lint
