@@ -37,7 +37,6 @@
     "format": "prettier --write \"**/*.{ts,js,json,graphql,gql,yaml,yml,md}\"",
     "format:check": "prettier --check \"**/*.{ts,js,json,graphql,gql,yaml,yml,md}\"",
     "prepare": "husky install",
-    "build": "npm run build",
     "test": "cd packages/server && npm run test && cd ../client && npm run test --watchAll"
   },
   "lint-staged": {
