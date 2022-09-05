@@ -52,6 +52,7 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.1.8",
     "eslint-plugin-testing-library": "^4.12.2",
+    "@typescript-eslint/utils": "^5.13.0",
     "msw": "^0.35.0"
   }
 }
