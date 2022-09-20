@@ -22,6 +22,8 @@ jobs:
         run: npm run format:check
       - name: Lint
         run: npm run lint
+      - name: Build
+        run: npm run build
       - name: Test Server
         run: 'cd packages/server && npm run test'
       - name: Test Client
