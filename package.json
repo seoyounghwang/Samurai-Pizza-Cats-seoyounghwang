@@ -19,11 +19,8 @@
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0"
   },
-  "optionalDependencies": {
-    "fsevents": "2.1.2"
-  },
   "engines": {
-    "node": ">=16.0.0",
+    "node": ">=14.0.0",
     "npm": ">=8.17.0"
   },
   "workspaces": [
