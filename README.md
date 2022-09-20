@@ -28,7 +28,7 @@
 3. Run `npm run seed:database` to seed your local database
 4. Run `npm start` in the root folder to start the client and server in parallel.
 
-Note: Alternatively, you can run `npm start` for the client and server in separate terminals
+Note: Alternatively, you can run `npm start` for the client and server in separate terminals.
 
 ## Server Notes
 
@@ -36,7 +36,7 @@ Note: Alternatively, you can run `npm start` for the client and server in separa
 
 ## Client Notes
 
-- Watch the terminal for React warnings, and ensure they are fixed before putting up your pull request
+- Watch the terminal for React warnings, and ensure they are fixed before putting up your pull request.
 
 ### Troubleshooting
 
