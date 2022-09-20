@@ -19,15 +19,18 @@
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0"
   },
+  "optionalDependencies": {
+    "fsevents": "*"
+  },
   "engines": {
-    "node": ">=14.0.0",
+    "node": ">=16.0.0",
     "npm": ">=8.17.0"
   },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "install:all": "npm install && cd packages/client && npm install && cd ../server && npm install",
+    "install:all": "npm install --no-optional && cd packages/client && npm install --no-optional && cd ../server && npm install --no-optional",
     "start": "concurrently \"cd packages/client && npm run start\" \"cd packages/server && npm run start\"",
     "server:dev": "cd packages/server && npm start",
     "client:dev": "cd packages/client && npm start",
