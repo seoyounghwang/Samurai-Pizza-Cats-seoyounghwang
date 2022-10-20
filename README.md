@@ -1,5 +1,7 @@
 ### Harvest-Talent-Builder
 
+### Seoyoung Hwang
+
 ## Getting Started
 
 1. Create a new personal (and private!) repository in the Harvest-Builder github organization: https://github.com/Harvest-Builders/
