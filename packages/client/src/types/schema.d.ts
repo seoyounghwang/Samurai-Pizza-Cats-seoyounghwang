@@ -42,8 +42,23 @@ export type MutationUpdateToppingArgs = {
   input: UpdateToppingInput;
 };
 
+export type Pizza = {
+  __typename?: 'Pizza';
+  description: Scalars['String'];
+  id: Scalars['ObjectID'];
+  imgSrc: Scalars['String'];
+  name: Scalars['String'];
+  toppingIds: Array<Scalars['String']>;
+};
+
+export type PizzaQueryArgs = {
+  __typename?: 'PizzaQueryArgs';
+  id: Scalars['ObjectID'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  pizzas: Array<Pizza>;
   toppings: Array<Topping>;
 };
 
