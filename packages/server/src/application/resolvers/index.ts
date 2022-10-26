@@ -2,6 +2,8 @@ import { merge } from 'lodash';
 
 import { toppingResolver } from './topping.resolver';
 
-const resolvers = merge(toppingResolver);
+import { pizzaResolver } from './pizza.resolver';
+
+const resolvers = merge(toppingResolver, pizzaResolver);
 
 export { resolvers };
