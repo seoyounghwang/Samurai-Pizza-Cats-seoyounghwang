@@ -2,6 +2,7 @@ import { ObjectId, Collection } from 'mongodb';
 import { ToppingDocument, toToppingObject } from '../../../entities/topping';
 import { CreateToppingInput, Topping, UpdateToppingInput } from './topping.provider.types';
 import validateStringInputs from '../../../lib/string-validator';
+import { createSecureContext } from 'tls';
 
 class ToppingProvider {
   constructor(private collection: Collection<ToppingDocument>) {}
@@ -17,6 +18,11 @@ class ToppingProvider {
       .sort({ name: 1 })
       .toArray();
     return toppingsById.map(toToppingObject);
+  }
+
+  public async getPriceCents(ids: string[]): Promise<number> {
+    const sum = (await this.getToppingsById(ids)).reduce((prev, current) => prev + current.priceCents, 0);
+    return sum;
   }
 
   public async createTopping(input: CreateToppingInput): Promise<Topping> {

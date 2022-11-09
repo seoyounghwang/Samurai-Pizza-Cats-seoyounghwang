@@ -10,6 +10,7 @@ const PizzaItem: React.FC<PizzaItemProps> = ({ pizza, ...props }) => {
     <ListItem {...props}>
       <ListItemText primary={pizza?.name} />
       <ListItemText primary={pizza?.description} />
+      <ListItemText primary={pizza?.priceCents} />
       <img src={pizza?.imgSrc} />
     </ListItem>
   );

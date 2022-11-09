@@ -13,6 +13,9 @@ const toppingResolver = {
     toppings: async (parent: Pizza): Promise<Topping[]> => {
       return toppingProvider.getToppingsById(parent.toppingIds);
     },
+    priceCents: async (parent: Pizza): Promise<number> => {
+      return toppingProvider.getPriceCents(parent.toppingIds);
+    },
   },
 
   Mutation: {
