@@ -7,6 +7,7 @@ const typeDefs = gql`
     description: String!
     toppingIds: [String!]!
     imgSrc: String!
+    toppings: [Topping!]!
   }
   type Query {
     pizzas: [Pizza!]!
