@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
 import Nav from './components/Nav';
 import Toppings from './components/toppings/Toppings';
-import Pizzas from './components/pizza/Pizzas';
+import Pizzas from './components/pizza/PizzaList';
 
 const App = (): JSX.Element => {
   return (
