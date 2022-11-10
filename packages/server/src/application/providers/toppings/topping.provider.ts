@@ -2,7 +2,6 @@ import { ObjectId, Collection } from 'mongodb';
 import { ToppingDocument, toToppingObject } from '../../../entities/topping';
 import { CreateToppingInput, Topping, UpdateToppingInput } from './topping.provider.types';
 import validateStringInputs from '../../../lib/string-validator';
-import { createSecureContext } from 'tls';
 
 class ToppingProvider {
   constructor(private collection: Collection<ToppingDocument>) {}
@@ -13,6 +12,7 @@ class ToppingProvider {
   }
 
   public async getToppingsById(ids: string[]): Promise<Topping[]> {
+    ids.map((id) => new ObjectId(id));
     const toppingsById = await this.collection
       .find({ _id: { $in: ids } })
       .sort({ name: 1 })
@@ -23,6 +23,14 @@ class ToppingProvider {
   public async getPriceCents(ids: string[]): Promise<number> {
     const sum = (await this.getToppingsById(ids)).reduce((prev, current) => prev + current.priceCents, 0);
     return sum;
+  }
+
+  public async validateToppings(ids: string[]): Promise<void> {
+    ids.map((id) => new Object(id));
+    const allToppingIds = (await this.getToppings()).map((toppings) => toppings.id);
+    const result = ids.map((id) => allToppingIds.indexOf(id));
+    const isValid = result.includes(-1) ? false : true;
+    if (isValid == false) throw new Error(`toppings are not valid`);
   }
 
   public async createTopping(input: CreateToppingInput): Promise<Topping> {
