@@ -9,3 +9,10 @@ export interface Pizza {
   toppings: Topping[];
   priceCents: number;
 }
+
+export interface CreatePizzaInput {
+  name: string;
+  description: string;
+  imgSrc: string;
+  toppingIds: string[];
+}

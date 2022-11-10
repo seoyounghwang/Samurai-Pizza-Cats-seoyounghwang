@@ -14,6 +14,13 @@ export type Scalars = {
   ObjectID: any;
 };
 
+export type CreatePizzaInput = {
+  description: Scalars['String'];
+  imgSrc: Scalars['String'];
+  name: Scalars['String'];
+  toppingIds: Array<Scalars['ObjectID']>;
+};
+
 export type CreateToppingInput = {
   name: Scalars['String'];
   priceCents: Scalars['Int'];
@@ -25,9 +32,14 @@ export type DeleteToppingInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createPizza: Pizza;
   createTopping: Topping;
   deleteTopping: Scalars['ObjectID'];
   updateTopping: Topping;
+};
+
+export type MutationCreatePizzaArgs = {
+  input: CreatePizzaInput;
 };
 
 export type MutationCreateToppingArgs = {
