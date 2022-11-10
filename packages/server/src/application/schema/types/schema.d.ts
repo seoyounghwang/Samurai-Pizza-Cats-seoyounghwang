@@ -26,6 +26,10 @@ export type CreateToppingInput = {
   priceCents: Scalars['Int'];
 };
 
+export type DeletePizzaInput = {
+  id: Scalars['ObjectID'];
+};
+
 export type DeleteToppingInput = {
   id: Scalars['ObjectID'];
 };
@@ -34,7 +38,9 @@ export type Mutation = {
   __typename?: 'Mutation';
   createPizza: Pizza;
   createTopping: Topping;
+  deletePizza: Scalars['ObjectID'];
   deleteTopping: Scalars['ObjectID'];
+  updatePizza: Pizza;
   updateTopping: Topping;
 };
 
@@ -46,8 +52,16 @@ export type MutationCreateToppingArgs = {
   input: CreateToppingInput;
 };
 
+export type MutationDeletePizzaArgs = {
+  input: DeletePizzaInput;
+};
+
 export type MutationDeleteToppingArgs = {
   input: DeleteToppingInput;
+};
+
+export type MutationUpdatePizzaArgs = {
+  input: UpdatePizzaInput;
 };
 
 export type MutationUpdateToppingArgs = {
@@ -85,6 +99,14 @@ export type Topping = {
 
 export type ToppingQueryArgs = {
   id: Scalars['ObjectID'];
+};
+
+export type UpdatePizzaInput = {
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['ObjectID'];
+  imgSrc?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  toppingIds?: InputMaybe<Array<InputMaybe<Scalars['ObjectID']>>>;
 };
 
 export type UpdateToppingInput = {
