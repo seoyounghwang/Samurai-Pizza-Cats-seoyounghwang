@@ -2,10 +2,11 @@ import { Collection, ObjectId } from 'mongodb';
 import validateStringInputs from '../../../lib/string-validator';
 import { PizzaDocument, toPizzaObject } from '../../../entities/pizza';
 import { CreatePizzaInput, Pizza, UpdatePizzaInput } from './pizza.provider.types';
-import { toppingProvider } from '..';
+// import { toppingProvider } from '..';
+import { ToppingProvider } from '../toppings/topping.provider';
 
 class PizzaProvider {
-  constructor(private collection: Collection<PizzaDocument>) {}
+  constructor(private collection: Collection<PizzaDocument>, private toppingProvider: ToppingProvider) {}
 
   public async getPizzas(): Promise<Pizza[]> {
     const pizzas = await this.collection.find().sort({ name: 1 }).toArray();
@@ -14,7 +15,7 @@ class PizzaProvider {
 
   public async createPizza(input: CreatePizzaInput): Promise<Pizza> {
     const { description, imgSrc, name, toppingIds } = input;
-    await toppingProvider.validateToppings(toppingIds);
+    await this.toppingProvider.validateToppings(toppingIds);
 
     if (description) validateStringInputs(description);
     if (imgSrc) validateStringInputs(imgSrc);
