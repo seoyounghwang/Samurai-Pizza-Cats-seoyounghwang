@@ -7,4 +7,20 @@ export interface Pizza {
   toppingIds: string[];
   imgSrc: string;
   toppings: Topping[];
+  priceCents: number;
+}
+
+export interface CreatePizzaInput {
+  name: string;
+  description: string;
+  imgSrc: string;
+  toppingIds: string[];
+}
+
+export interface UpdatePizzaInput {
+  id: string;
+  name?: string | null;
+  description?: string | null;
+  imgSrc?: string | null;
+  toppingIds?: string[] | null;
 }
