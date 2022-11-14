@@ -2,7 +2,6 @@ import { ObjectId, Collection } from 'mongodb';
 import { ToppingDocument, toToppingObject } from '../../../entities/topping';
 import { CreateToppingInput, Topping, UpdateToppingInput } from './topping.provider.types';
 import validateStringInputs from '../../../lib/string-validator';
-import { createSecureContext } from 'tls';
 
 class ToppingProvider {
   constructor(private collection: Collection<ToppingDocument>) {}
