@@ -19,7 +19,6 @@ class PizzaProvider {
     if (description) validateStringInputs(description);
     if (imgSrc) validateStringInputs(imgSrc);
     if (name) validateStringInputs(name);
-    // toppingIds.map((toppingId) => new ObjectId(toppingId));
     if (toppingIds) await this.toppingProvider.validateToppings(toppingIds);
 
     const data = await this.collection.findOneAndUpdate(
@@ -64,7 +63,6 @@ class PizzaProvider {
     if (description) validateStringInputs(description);
     if (imgSrc) validateStringInputs(imgSrc);
     if (name) validateStringInputs(name);
-    // if (toppingIds) validateStringInputs(toppingIds);
     toppingIds && (await this.toppingProvider.validateToppings(toppingIds));
 
     const data = await this.collection.findOneAndUpdate(
