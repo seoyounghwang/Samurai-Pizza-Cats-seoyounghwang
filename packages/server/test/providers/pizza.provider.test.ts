@@ -1,5 +1,5 @@
 import { reveal, stub } from 'jest-auto-stub';
-import { Collection } from 'mongodb';
+import { Collection, ObjectId } from 'mongodb';
 import { PizzaProvider } from '../../src/application/providers/pizzas/pizza.provider';
 import { PizzaDocument, toPizzaObject } from '../../src/entities/pizza';
 import { createMockPizzaDocument } from '../helpers/pizza.helper';
@@ -38,14 +38,6 @@ describe('pizzaProvider', (): void => {
       description: 'test pizza desc',
       imgSrc: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x4.jpg',
       toppingIds: ['564f0184537878b57efcb703'],
-      toppings: [
-        {
-          id: '564f0184537878b57efcb703',
-          name: 'Tomato Sauce',
-          priceCents: 250,
-        },
-      ],
-      priceCents: 250,
     });
 
     beforeEach(() => {
@@ -100,14 +92,6 @@ describe('pizzaProvider', (): void => {
       description: 'test pizza desc',
       imgSrc: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x4.jpg',
       toppingIds: ['564f0184537878b57efcb703'],
-      toppings: [
-        {
-          id: '564f0184537878b57efcb703',
-          name: 'Tomato Sauce',
-          priceCents: 250,
-        },
-      ],
-      priceCents: 250,
     });
 
     beforeEach(() => {

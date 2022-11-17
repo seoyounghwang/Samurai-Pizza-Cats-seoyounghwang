@@ -15,21 +15,19 @@ class PizzaProvider {
 
   public async createPizza(input: CreatePizzaInput): Promise<Pizza> {
     const { description, imgSrc, name, toppingIds } = input;
-    await this.toppingProvider.validateToppings(toppingIds);
 
     if (description) validateStringInputs(description);
     if (imgSrc) validateStringInputs(imgSrc);
     if (name) validateStringInputs(name);
-    if (toppingIds) validateStringInputs(toppingIds);
+    // toppingIds.map((toppingId) => new ObjectId(toppingId));
+    if (toppingIds) await this.toppingProvider.validateToppings(toppingIds);
 
     const data = await this.collection.findOneAndUpdate(
       { _id: new ObjectId() },
       {
         $set: {
-          ...(toppingIds && { toppingIds: toppingIds.map((toppingId) => new ObjectId(toppingId)) }),
-          ...(name && { name }),
-          ...(description && { description }),
-          ...(imgSrc && { imgSrc }),
+          ...input,
+          toppingIds: input.toppingIds?.map((id) => new ObjectId(id)),
           updateAt: new Date().toISOString(),
           createAt: new Date().toISOString(),
         },
@@ -66,7 +64,8 @@ class PizzaProvider {
     if (description) validateStringInputs(description);
     if (imgSrc) validateStringInputs(imgSrc);
     if (name) validateStringInputs(name);
-    if (toppingIds) validateStringInputs(toppingIds);
+    // if (toppingIds) validateStringInputs(toppingIds);
+    toppingIds && (await this.toppingProvider.validateToppings(toppingIds));
 
     const data = await this.collection.findOneAndUpdate(
       { _id: new ObjectId(id) },

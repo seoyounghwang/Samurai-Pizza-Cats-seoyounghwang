@@ -1,5 +1,5 @@
 import { gql } from 'apollo-server-core';
-import { pizzaProvider } from '../../src/application/providers';
+import { pizzaProvider, toppingProvider } from '../../src/application/providers';
 import { pizzaResolver } from '../../src/application/resolvers/pizza.resolver';
 import { typeDefs } from '../../src/application/schema/index';
 import {
@@ -9,6 +9,7 @@ import {
 } from '../../src/application/schema/types/schema';
 import { createMockPizza } from '../helpers/pizza.helper';
 import { TestClient } from '../helpers/client.helper';
+import { createMockTopping } from 'test/helpers/topping.helper';
 
 let client: TestClient;
 
@@ -17,6 +18,7 @@ jest.mock('../../src/application/database', () => ({
 }));
 
 const mockPizza = createMockPizza();
+const mockTopping = createMockTopping();
 
 beforeAll(async (): Promise<void> => {
   client = new TestClient(typeDefs, pizzaResolver);
@@ -36,7 +38,6 @@ describe('pizzaResolver', (): void => {
             name
             description
             imgSrc
-            toppingIds
             toppings {
               id
               name
@@ -48,6 +49,8 @@ describe('pizzaResolver', (): void => {
       `;
       test('should get all pizzas', async () => {
         jest.spyOn(pizzaProvider, 'getPizzas').mockResolvedValue([mockPizza]);
+        jest.spyOn(toppingProvider, 'getToppingsById').mockResolvedValue([mockTopping]);
+        jest.spyOn(toppingProvider, 'getPriceCents').mockResolvedValue(mockPizza.priceCents);
 
         const result = await client.query({ query });
 
@@ -60,7 +63,6 @@ describe('pizzaResolver', (): void => {
               description: mockPizza.description,
               imgSrc: mockPizza.imgSrc,
               priceCents: mockPizza.priceCents,
-              toppingIds: mockPizza.toppingIds,
               toppings: mockPizza.toppings,
             },
           ],
@@ -87,7 +89,27 @@ describe('pizzaResolver', (): void => {
         name: 'test pizza',
         description: 'test pizza desc',
         imgSrc: 'https://www.glutenfreepalate.com/wp-content/uploads/2018/08/Gluten-Free-Pizza-3.2.jpg',
-        toppingIds: ['564f0184537878b57efcb703', 'e9e565e9a57cf33fb9b8ceed'],
+        priceCents: 700,
+        toppings: [
+          {
+            __typename: 'Topping',
+            id: '564f0184537878b57efcb703',
+            name: 'Tomato Sauce',
+            priceCents: 250,
+          },
+          {
+            __typename: 'Topping',
+            id: 'e9e565e9a57cf33fb9b8ceed',
+            name: 'BBQ Sauce',
+            priceCents: 250,
+          },
+          {
+            __typename: 'Topping',
+            id: 'a10d50e732a0b1d4f2c5e506',
+            name: 'Mozzarella',
+            priceCents: 200,
+          },
+        ],
       });
 
       beforeEach(() => {
@@ -100,7 +122,7 @@ describe('pizzaResolver', (): void => {
             name: validPizza.name,
             description: validPizza.description,
             imgSrc: validPizza.imgSrc,
-            toppingIds: validPizza.toppingIds,
+            toppingIds: validPizza.toppings,
           },
         };
 
@@ -127,7 +149,8 @@ describe('pizzaResolver', (): void => {
             name: validPizza.name,
             description: validPizza.description,
             imgSrc: validPizza.imgSrc,
-            toppingIds: validPizza.toppingIds,
+            toppings: validPizza.toppings,
+            priceCents: validPizza.priceCents,
           },
         });
       });
@@ -171,7 +194,6 @@ describe('pizzaResolver', (): void => {
             name
             description
             imgSrc
-            toppingIds
             toppings {
               id
               name
@@ -192,8 +214,6 @@ describe('pizzaResolver', (): void => {
           id: mockPizza.id,
           name: updatedPizza.name,
           description: updatedPizza.description,
-          imgSrc: updatedPizza.imgSrc,
-          toppingIds: updatedPizza.toppingIds,
         },
       };
 

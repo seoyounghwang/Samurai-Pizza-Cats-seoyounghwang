@@ -1,6 +1,11 @@
-import { CreatePizzaInput, DeletePizzaInput, Pizza, UpdateToppingInput } from '../schema/types/schema';
+import { CreatePizzaInput, DeletePizzaInput, Pizza as PizzaSchema, UpdateToppingInput } from '../schema/types/schema';
 import { pizzaProvider } from '../providers';
 import { Root } from '../schema/types/types';
+import { ObjectId } from 'mongodb';
+
+export type Pizza = Omit<PizzaSchema, 'toppings' | 'priceCents'> & {
+  toppingIds: string[];
+};
 
 const pizzaResolver = {
   Query: {

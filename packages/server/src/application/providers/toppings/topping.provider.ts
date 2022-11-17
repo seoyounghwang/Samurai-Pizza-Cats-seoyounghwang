@@ -11,26 +11,24 @@ class ToppingProvider {
     return toppings.map(toToppingObject);
   }
 
-  public async getToppingsById(ids: string[]): Promise<Topping[]> {
-    ids.map((id) => new ObjectId(id));
-    const toppingsById = await this.collection
-      .find({ _id: { $in: ids } })
-      .sort({ name: 1 })
-      .toArray();
+  public async getToppingsById(ids: ObjectId[]): Promise<Topping[]> {
+    // ids.map((id) => new ObjectId(id));
+    const toppingsById = await this.collection.find({ _id: { $in: ids } }).toArray();
     return toppingsById.map(toToppingObject);
   }
 
-  public async getPriceCents(ids: string[]): Promise<number> {
+  public async getPriceCents(ids: ObjectId[]): Promise<number> {
     const sum = (await this.getToppingsById(ids)).reduce((prev, current) => prev + current.priceCents, 0);
     return sum;
   }
 
   public async validateToppings(ids: string[]): Promise<void> {
-    ids.map((id) => new Object(id));
-    const allToppingIds = (await this.getToppings()).map((toppings) => toppings.id);
-    const result = ids.map((id) => allToppingIds.indexOf(id));
-    const isValid = result.includes(-1) ? false : true;
-    if (isValid == false) throw new Error(`toppings are not valid`);
+    // ids.map((id)=>console.log(typeof(id)));
+    const objTopping: ObjectId[] = ids.map((id) => new ObjectId(id));
+    const toppingsById = await this.getToppingsById(objTopping);
+    if (ids.length !== toppingsById.length) {
+      throw new Error(`toppings are not valid`);
+    }
   }
 
   public async createTopping(input: CreateToppingInput): Promise<Topping> {
