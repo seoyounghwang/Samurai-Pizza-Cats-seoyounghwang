@@ -134,7 +134,7 @@ describe('pizzaResolver', (): void => {
             name: validPizza.name,
             description: validPizza.description,
             imgSrc: validPizza.imgSrc,
-            toppingIds: validPizza.toppingIds,
+            // toppingIds: validPizza.toppings.map((topping) => topping.id),
           },
         });
       });

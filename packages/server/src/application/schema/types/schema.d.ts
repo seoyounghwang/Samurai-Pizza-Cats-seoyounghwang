@@ -16,7 +16,7 @@ export type Scalars = {
 
 export type CreatePizzaInput = {
   description: Scalars['String'];
-  imgSrc?: InputMaybe<Scalars['String']>;
+  imgSrc: Scalars['String'];
   name: Scalars['String'];
   toppingIds: Array<Scalars['ObjectID']>;
 };
@@ -72,10 +72,9 @@ export type Pizza = {
   __typename?: 'Pizza';
   description: Scalars['String'];
   id: Scalars['ObjectID'];
-  imgSrc?: Maybe<Scalars['String']>;
+  imgSrc: Scalars['String'];
   name: Scalars['String'];
   priceCents: Scalars['Int'];
-  toppingIds: Array<Scalars['String']>;
   toppings: Array<Topping>;
 };
 
