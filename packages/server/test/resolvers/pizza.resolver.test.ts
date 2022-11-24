@@ -63,7 +63,7 @@ describe('pizzaResolver', (): void => {
               id: mockPizza.id,
               name: mockPizza.name,
               description: mockPizza.description,
-              imgSrc: mockPizza.imgSrc,
+              imgSrc: mockPizza.imgSrc ?? mockPizza.imgSrc,
               priceCents: mockPizza.priceCents,
               toppings: [],
             },
@@ -134,6 +134,7 @@ describe('pizzaResolver', (): void => {
             name: validPizza.name,
             description: validPizza.description,
             imgSrc: validPizza.imgSrc,
+            toppingIds: validPizza.toppingIds,
           },
         });
       });

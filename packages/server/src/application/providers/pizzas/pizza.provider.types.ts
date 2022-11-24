@@ -14,7 +14,7 @@ export interface Pizza {
 export interface CreatePizzaInput {
   name: string;
   description: string;
-  imgSrc: string;
+  imgSrc?: string | null;
   toppingIds: string[];
 }
 

@@ -5,8 +5,8 @@ const typeDefs = gql`
     id: ObjectID!
     name: String!
     description: String!
-    # toppingIds: [ObjectID!]!
-    imgSrc: String!
+    toppingIds: [String!]!
+    imgSrc: String
     toppings: [Topping!]!
     priceCents: Int!
   }
@@ -27,7 +27,7 @@ const typeDefs = gql`
   input CreatePizzaInput {
     name: String!
     description: String!
-    imgSrc: String!
+    imgSrc: String
     toppingIds: [ObjectID!]!
   }
 
