@@ -4,7 +4,6 @@ import { Pizza } from '../application/providers/pizzas/pizza.provider.types';
 // interface PizzaDocument extends Document, Omit<Pizza, 'id'> {}
 interface PizzaDocument extends Document, Omit<Pizza, 'toppingIds' | 'id'> {
   toppingIds: ObjectId[];
-  // toppingIds: string[];
 }
 
 const toPizzaObject = (pizza: PizzaDocument): Pizza => {
@@ -14,6 +13,10 @@ const toPizzaObject = (pizza: PizzaDocument): Pizza => {
     description: pizza.description,
     imgSrc: pizza.imgSrc,
     toppingIds: pizza.toppingIds,
+    // priceCents: pizza.priceCents,
+    // toppings: pizza.toppings,
+    // toppingIds: pizza.toppingIds,
+    // toppingIds: pizza.toppingIds,
   };
 };
 

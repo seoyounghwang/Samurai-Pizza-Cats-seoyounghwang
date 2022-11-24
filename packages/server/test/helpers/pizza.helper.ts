@@ -9,9 +9,9 @@ const createMockPizza = (data?: Partial<Pizza>): Pizza => {
     name: 'Lovey',
     description: 'Jest pizza',
     imgSrc: 'http://cm1.narvii.com/6874/bcc63b6b6fa12d68d8b0a8488de55282d701df4c_00.jpg',
-    priceCents: 700,
     toppings: [],
-    toppingIds: [],
+    priceCents: 700,
+    // toppingIds: [],
     ...data,
   };
 };
