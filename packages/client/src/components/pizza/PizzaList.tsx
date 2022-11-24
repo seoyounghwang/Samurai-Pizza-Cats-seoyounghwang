@@ -24,7 +24,6 @@ const PizzaList: React.FC = () => {
     console.log('select pizza function');
     console.log(pizza);
     setSeletedPizza(pizza);
-    // setToppings(topping_data?.toppings);
     setOpen(true);
   };
 
