@@ -8,7 +8,6 @@ import { ToppingDocument } from '../../src/entities/topping';
 import { createMockPizzaDocument } from '../helpers/pizza.helper';
 import { createMockToppingDocument } from '../helpers/topping.helper';
 import { mockSortToArray } from '../helpers/mongo.helper';
-// import { toppingProvider } from '../../src/application/providers';
 
 const stubPizzaCollection = stub<Collection<PizzaDocument>>();
 const stubToppingCollection = stub<Collection<ToppingDocument>>();

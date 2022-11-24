@@ -12,7 +12,6 @@ class ToppingProvider {
   }
 
   public async getToppingsById(ids: ObjectId[]): Promise<Topping[]> {
-    // ids.map((id) => new ObjectId(id));
     const toppingsById = await this.collection.find({ _id: { $in: ids } }).toArray();
     return toppingsById.map(toToppingObject);
   }
@@ -23,7 +22,6 @@ class ToppingProvider {
   }
 
   public async validateToppings(ids: string[]): Promise<void> {
-    // ids.map((id)=>console.log(typeof(id)));
     const objTopping: ObjectId[] = ids.map((id) => new ObjectId(id));
     const toppingsById = await this.getToppingsById(objTopping);
     if (ids.length !== toppingsById.length) {

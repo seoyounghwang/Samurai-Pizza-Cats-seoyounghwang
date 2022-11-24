@@ -13,10 +13,6 @@ const toPizzaObject = (pizza: PizzaDocument): Pizza => {
     description: pizza.description,
     imgSrc: pizza.imgSrc,
     toppingIds: pizza.toppingIds,
-    // priceCents: pizza.priceCents,
-    // toppings: pizza.toppings,
-    // toppingIds: pizza.toppingIds,
-    // toppingIds: pizza.toppingIds,
   };
 };
 
