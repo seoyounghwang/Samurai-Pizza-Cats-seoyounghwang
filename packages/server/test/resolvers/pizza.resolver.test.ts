@@ -9,7 +9,7 @@ import {
 } from '../../src/application/schema/types/schema';
 import { createMockPizza } from '../helpers/pizza.helper';
 import { TestClient } from '../helpers/client.helper';
-import { createMockTopping } from 'test/helpers/topping.helper';
+import { createMockTopping } from '../helpers/topping.helper';
 
 let client: TestClient;
 
@@ -64,6 +64,7 @@ describe('pizzaResolver', (): void => {
               imgSrc: mockPizza.imgSrc,
               priceCents: mockPizza.priceCents,
               toppings: mockPizza.toppings,
+              // toppingIds: [],
             },
           ],
         });
@@ -90,27 +91,20 @@ describe('pizzaResolver', (): void => {
         description: 'test pizza desc',
         imgSrc: 'https://www.glutenfreepalate.com/wp-content/uploads/2018/08/Gluten-Free-Pizza-3.2.jpg',
         priceCents: 700,
-        toppings: [
-          {
-            __typename: 'Topping',
-            id: '564f0184537878b57efcb703',
-            name: 'Tomato Sauce',
-            priceCents: 250,
-          },
-          {
-            __typename: 'Topping',
-            id: 'e9e565e9a57cf33fb9b8ceed',
-            name: 'BBQ Sauce',
-            priceCents: 250,
-          },
-          {
-            __typename: 'Topping',
-            id: 'a10d50e732a0b1d4f2c5e506',
-            name: 'Mozzarella',
-            priceCents: 200,
-          },
-        ],
+        toppings: [],
+        toppingIds: [],
       });
+
+      /**
+       * __typename: 'Pizza',
+    id: new ObjectID().toHexString(),
+    name: 'Lovey',
+    description: 'Jest pizza',
+    imgSrc: 'http://cm1.narvii.com/6874/bcc63b6b6fa12d68d8b0a8488de55282d701df4c_00.jpg',
+    priceCents: 700,
+    toppings: [],
+    ...data,
+       */
 
       beforeEach(() => {
         jest.spyOn(pizzaProvider, 'createPizza').mockResolvedValue(validPizza);
@@ -137,7 +131,7 @@ describe('pizzaResolver', (): void => {
             name: validPizza.name,
             description: validPizza.description,
             imgSrc: validPizza.imgSrc,
-            toppingIds: validPizza.toppingIds,
+            toppingIds: validPizza.toppings.map((topping) => topping.id),
           },
         };
 
@@ -149,8 +143,7 @@ describe('pizzaResolver', (): void => {
             name: validPizza.name,
             description: validPizza.description,
             imgSrc: validPizza.imgSrc,
-            toppings: validPizza.toppings,
-            priceCents: validPizza.priceCents,
+            // toppingIds: validPizza.toppingIds,
           },
         });
       });
@@ -207,6 +200,10 @@ describe('pizzaResolver', (): void => {
       const updatedPizza = createMockPizza({
         name: 'updated pizza',
         description: 'test updated pizza',
+        imgSrc: 'updatedImg',
+        // toppingIds: [],
+        toppings: [],
+        priceCents: 500,
       });
 
       const variables: MutationUpdatePizzaArgs = {
@@ -230,9 +227,24 @@ describe('pizzaResolver', (): void => {
       test('should return updated pizza', async () => {
         const result = await client.mutate({ mutation, variables });
 
+        /**
+         * __typename: 'Pizza',
+              id: mockPizza.id,
+              name: mockPizza.name,
+              description: mockPizza.description,
+              imgSrc: mockPizza.imgSrc,
+              priceCents: mockPizza.priceCents,
+              toppings: mockPizza.toppings,
+         */
         expect(result.data).toEqual({
           updatePizza: {
-            ...updatedPizza,
+            __typename: 'Pizza',
+            id: updatedPizza.id,
+            name: updatedPizza.name,
+            description: updatedPizza.description,
+            imgSrc: updatedPizza.imgSrc,
+            priceCents: updatedPizza.priceCents,
+            toppings: updatedPizza.toppings,
           },
         });
       });

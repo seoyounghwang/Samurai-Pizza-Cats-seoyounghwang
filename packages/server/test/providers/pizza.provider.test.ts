@@ -1,13 +1,19 @@
 import { reveal, stub } from 'jest-auto-stub';
-import { Collection, ObjectId } from 'mongodb';
+import { Collection } from 'mongodb';
+
 import { PizzaProvider } from '../../src/application/providers/pizzas/pizza.provider';
+import { ToppingProvider } from '../../src/application/providers/toppings/topping.provider';
 import { PizzaDocument, toPizzaObject } from '../../src/entities/pizza';
+import { ToppingDocument } from '../../src/entities/topping';
 import { createMockPizzaDocument } from '../helpers/pizza.helper';
+import { createMockToppingDocument } from '../helpers/topping.helper';
 import { mockSortToArray } from '../helpers/mongo.helper';
-import { toppingProvider } from '../../src/application/providers';
+// import { toppingProvider } from '../../src/application/providers';
 
 const stubPizzaCollection = stub<Collection<PizzaDocument>>();
+const stubToppingCollection = stub<Collection<ToppingDocument>>();
 
+const toppingProvider = new ToppingProvider(stubToppingCollection);
 const pizzaProvider = new PizzaProvider(stubPizzaCollection, toppingProvider);
 
 beforeEach(jest.clearAllMocks);
@@ -33,22 +39,26 @@ describe('pizzaProvider', (): void => {
     });
   });
   describe('createPizza', (): void => {
+    const validTopping = createMockToppingDocument({ name: 'test topping', priceCents: 500 });
     const validPizza = createMockPizzaDocument({
       name: 'test pizza',
       description: 'test pizza desc',
       imgSrc: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x4.jpg',
-      toppingIds: ['564f0184537878b57efcb703'],
+      toppingIds: validTopping.id,
+      toppings: validTopping,
+      priceCents: validTopping.priceCents,
     });
 
     beforeEach(() => {
       reveal(stubPizzaCollection).findOneAndUpdate.mockImplementation(() => ({ value: validPizza }));
+      reveal(stubToppingCollection).find.mockImplementation(mockSortToArray([validTopping]));
     });
     test('should call findOneAndUpdate once', async () => {
       await pizzaProvider.createPizza({
         name: validPizza.name,
         description: validPizza.description,
         imgSrc: validPizza.imgSrc,
-        toppingIds: validPizza.toppingIds,
+        toppingIds: validPizza.toppingIds?.map((toppingId) => toppingId.toString()),
       });
 
       expect(stubPizzaCollection.findOneAndUpdate).toHaveBeenCalledTimes(1);
@@ -59,7 +69,7 @@ describe('pizzaProvider', (): void => {
         name: validPizza.name,
         description: validPizza.description,
         imgSrc: validPizza.imgSrc,
-        toppingIds: validPizza.toppingIds,
+        toppingIds: validPizza.toppingIds?.map((toppingId) => toppingId.toString()),
       });
       expect(result).toEqual(toPizzaObject(validPizza));
     });
@@ -87,11 +97,14 @@ describe('pizzaProvider', (): void => {
     });
   });
   describe('updatePizza', (): void => {
+    const validTopping = createMockToppingDocument({ name: 'test topping', priceCents: 500 });
     const validPizza = createMockPizzaDocument({
-      name: 'teset pizza',
+      name: 'test pizza',
       description: 'test pizza desc',
       imgSrc: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x4.jpg',
-      toppingIds: ['564f0184537878b57efcb703'],
+      toppingIds: validTopping.id,
+      toppings: validTopping,
+      priceCents: validTopping.priceCents,
     });
 
     beforeEach(() => {
@@ -104,7 +117,7 @@ describe('pizzaProvider', (): void => {
         name: validPizza.name,
         description: validPizza.description,
         imgSrc: validPizza.imgSrc,
-        toppingIds: validPizza.toppingIds,
+        toppingIds: validPizza.toppingIds?.map((toppingId) => toppingId.toString()),
       });
 
       expect(stubPizzaCollection.findOneAndUpdate).toHaveBeenCalledTimes(1);
@@ -116,7 +129,7 @@ describe('pizzaProvider', (): void => {
         name: validPizza.name,
         description: validPizza.description,
         imgSrc: validPizza.imgSrc,
-        toppingIds: validPizza.toppingIds,
+        toppingIds: validPizza.toppingIds?.map((toppingId) => toppingId.toString()),
       });
 
       expect(result).toEqual(toPizzaObject(validPizza));
