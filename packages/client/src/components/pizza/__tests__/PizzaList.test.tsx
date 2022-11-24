@@ -13,8 +13,6 @@ describe('Pizzas', () => {
     return {
       ...view,
       $findPizzaItems: () => screen.findAllByTestId(/^pizza-item-/),
-      // $findPizzaItems: () => screen.getAllByTestId(/^pizza-item-/),
-      // screen.get(/^pizza-item-/),
       $findPizzaItemsButtons: () => screen.findAllByRole('button'),
     };
   };
@@ -28,28 +26,13 @@ describe('Pizzas', () => {
           })
         );
       })
-      // graphql.query('Pizzas', (_request, response, context) => {
-      //     return response(
-      //     context.data({
-      //         loading: false,
-      //         pizzas: [...data],
-      //     })
-      //     );
-      // })
     );
   };
 
   beforeEach(() => {
     const pizza1 = createTestPizza();
-    // const pizza2 = createTestPizza();
-    mockPizzasQuery([pizza1 /* , pizza2 */]);
+    mockPizzasQuery([pizza1]);
   });
-
-  //   beforeAll(() => server.listen());
-  // afterAll(() => server.close());
-  // afterEach(() => {
-  //   server.resetHandlers()
-  // });
 
   test('should display a list of pizzas', async () => {
     const { $findPizzaItems } = renderPizzaList();

@@ -37,12 +37,6 @@ describe('Toppings', () => {
     mockToppingsQuery([topping1, topping2]);
   });
 
-  //   beforeAll(() => server.listen());
-  // afterAll(() => server.close());
-  // afterEach(() => {
-  //   server.resetHandlers()
-  // });
-
   test('should display a list of toppings', async () => {
     const { $findToppingItems } = renderToppingList();
 
