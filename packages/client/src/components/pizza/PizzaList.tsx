@@ -27,9 +27,15 @@ const PizzaList: React.FC = () => {
     setOpen(true);
   };
 
-  const pizzaList = data?.pizzas.map((pizza: Pizza) => (
-    <ListItem>
-      <CardItem key={pizza.id} children={<PizzaItem key={pizza.id} pizza={pizza} handleOpen={handleOpen} />} />
+  const pizzaList = data?.pizzas?.map((pizza: Pizza) => (
+    <ListItem key={pizza.id}>
+      <CardItem
+        key={pizza.id}
+        data-testid={`pizza-item-${pizza?.id}`}
+        children={
+          <PizzaItem data-testid={`pizza-item-${pizza?.id}`} key={pizza.id} pizza={pizza} handleOpen={handleOpen} />
+        }
+      />
     </ListItem>
   ));
 

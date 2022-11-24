@@ -1,5 +1,4 @@
 import { ObjectId } from 'bson';
-
 import { Topping } from '../../../types/schema';
 
 export const createTestTopping = (data: Partial<Topping> = {}): Topping & { __typename: string } => ({
