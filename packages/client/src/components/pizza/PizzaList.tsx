@@ -1,15 +1,34 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { Container, List, ListItem } from '@material-ui/core';
+import { Card, Container, createStyles, Grid, List, ListItem, makeStyles, Theme } from '@material-ui/core';
 import { GET_PIZZAS } from '../../hooks/graphql/pizza/queries/get-pizzas';
 import { Pizza, Topping } from '../../types';
-import CardItem from '../common/CardItem';
 import CardItemSkeleton from '../common/CardItemSkeleton';
 import PizzaItem from './PizzaItem';
 import PizzaModal from './PizzaModal';
 import PageHeader from '../common/PageHeader';
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: theme.typography.pxToRem(400),
+      height: theme.typography.pxToRem(600),
+    },
+    title: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    img: {
+      display: 'flex',
+      width: theme.typography.pxToRem(350),
+      height: theme.typography.pxToRem(350),
+    },
+  })
+);
+
 const PizzaList: React.FC = () => {
+  const classes = useStyles();
   const { loading, data, error = loading === false && data === undefined ? true : false } = useQuery(GET_PIZZAS);
 
   const [selectedPizza, setSeletedPizza] = React.useState<Partial<Pizza>>();
@@ -28,15 +47,9 @@ const PizzaList: React.FC = () => {
   };
 
   const pizzaList = data?.pizzas?.map((pizza: Pizza) => (
-    <ListItem key={pizza.id}>
-      <CardItem
-        key={pizza.id}
-        data-testid={`pizza-item-${pizza?.id}`}
-        children={
-          <PizzaItem data-testid={`pizza-item-${pizza?.id}`} key={pizza.id} pizza={pizza} handleOpen={handleOpen} />
-        }
-      />
-    </ListItem>
+    <Grid item xs={12} sm={6} lg={4} key={pizza.id}>
+      <PizzaItem data-testid={`pizza-item-${pizza?.id}`} key={pizza.id} pizza={pizza} handleOpen={handleOpen} />
+    </Grid>
   ));
 
   if (loading) {
@@ -44,14 +57,14 @@ const PizzaList: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="md">
+    <Container>
       <PageHeader pageHeader={'Pizzas'} />
-      <List>
-        <ListItem>
-          <CardItem key="add-pizza" children={<PizzaItem key="add-pizza" handleOpen={handleOpen} />} />
-        </ListItem>
+      <Grid container spacing={4}>
+        <Grid item xs={12} sm={6} md={4} lg={4} key="add-pizza">
+          <PizzaItem key="add-pizza" handleOpen={handleOpen} />
+        </Grid>
         {pizzaList}
-      </List>
+      </Grid>
       <PizzaModal
         selectedPizza={selectedPizza}
         setSelectedPizza={setSeletedPizza}
