@@ -1,19 +1,17 @@
-import { Topping } from '../toppings/topping.provider.types';
+import { ObjectId } from 'mongodb';
 
 export interface Pizza {
   id: string;
   name: string;
   description: string;
-  toppingIds: string[];
+  toppingIds: ObjectId[];
   imgSrc: string;
-  toppings: Topping[];
-  priceCents: number;
 }
 
 export interface CreatePizzaInput {
   name: string;
   description: string;
-  imgSrc: string;
+  imgSrc?: string | null;
   toppingIds: string[];
 }
 
