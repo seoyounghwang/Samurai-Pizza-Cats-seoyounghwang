@@ -31,7 +31,8 @@ describe('Pizzas', () => {
 
   beforeEach(() => {
     const pizza1 = createTestPizza();
-    mockPizzasQuery([pizza1]);
+    const pizza2 = createTestPizza();
+    mockPizzasQuery([pizza1, pizza2]);
   });
 
   test('should display a list of pizzas', async () => {
