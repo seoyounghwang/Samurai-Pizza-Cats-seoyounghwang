@@ -74,7 +74,7 @@ export type Pizza = {
   id: Scalars['ObjectID'];
   imgSrc: Scalars['String'];
   name: Scalars['String'];
-  priceCents: Scalars['Int'];
+  priceCents: Scalars['Float'];
   toppings: Array<Topping>;
 };
 
