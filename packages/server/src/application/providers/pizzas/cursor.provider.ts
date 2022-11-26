@@ -10,9 +10,8 @@ import { QueryResult } from '@apollo/client';
 
 class CursorProvider {
   constructor(
-    private collection: Collection<PizzaDocument> // private toppingProvider: ToppingProvider,
-  ) // private cursorProvider: CursorProvider
-  {}
+    private collection: Collection<PizzaDocument> // private toppingProvider: ToppingProvider, // private cursorProvider: CursorProvider
+  ) {}
 
   public async getCursorIndex(cursor: string | null): Promise<number> {
     console.log('inside cursor.provider.');
