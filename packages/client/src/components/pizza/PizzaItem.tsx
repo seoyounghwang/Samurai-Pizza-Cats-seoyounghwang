@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     textAlign: 'center',
     width: '100%',
+    position: 'relative',
   },
 
   newPizzaDiv: {
@@ -37,7 +38,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   newPizzaTitle: {
     color: 'white',
-    fontSize: '2.5vw',
     paddingTop: '20px',
     flex: '1',
   },
@@ -45,8 +45,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   addButton: {
     alignItems: 'center',
     textAlign: 'center',
-    paddingBottom: '20px',
-    fontSize: '2.5vw',
+    // paddingBottom: '10px',
+    fontSize: '50px',
     flex: '8',
     color: 'white',
     transition: '0.3s',
@@ -100,7 +100,7 @@ const PizzaItem: React.FC<PizzaItemProps> = ({ pizza, handleOpen, ...props }) =>
         ) : (
           <CardContent className={`${classes.cardContent} ${classes.newPizzaContainer}`}>
             <div className={classes.newPizzaDiv}>
-              <h2 className={classes.newPizzaTitle}>Make a New Pizza</h2>
+              <h1 className={classes.newPizzaTitle}>Make a New Pizza</h1>
               <img src={createPizzaImage} alt="make-pizza-cat" className={classes.img} />
               <IconButton edge="end" aria-label="modify" type="button" onClick={(): void => handleOpen(pizza)}>
                 <AddCircle className={classes.addButton} />

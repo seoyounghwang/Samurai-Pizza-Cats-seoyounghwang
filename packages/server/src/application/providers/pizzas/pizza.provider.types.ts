@@ -22,3 +22,16 @@ export interface UpdatePizzaInput {
   imgSrc?: string | null;
   toppingIds?: string[] | null;
 }
+
+export interface GetCursorResultsInput {
+  cursor: string | null;
+  limit: number | null;
+  sort: number | null;
+}
+
+export interface GetPizzasResponse {
+  results: Pizza[];
+  totalCount: number;
+  hasNextPage: boolean;
+  cursor: string | null;
+}

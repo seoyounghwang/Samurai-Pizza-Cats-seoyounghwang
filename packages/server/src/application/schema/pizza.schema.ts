@@ -41,6 +41,24 @@ const typeDefs = gql`
     imgSrc: String
     toppingIds: [ObjectID]
   }
+  # test
+
+  type GetPizzasResponse {
+    totalCount: Int!
+    hasNextPage: Boolean!
+    cursor: String
+    results: [Pizza!]!
+  }
+
+  type Query {
+    pizzaResults(input: CursorInput): [GetPizzasResponse!]!
+  }
+
+  input CursorInput {
+    cursor: String
+    limit: Int
+    sort: Int
+  }
 `;
 
 export { typeDefs };
