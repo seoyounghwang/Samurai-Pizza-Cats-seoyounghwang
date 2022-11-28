@@ -29,7 +29,23 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const PizzaList: React.FC = () => {
   const classes = useStyles();
-  const { loading, data, error = loading === false && data === undefined ? true : false } = useQuery(GET_PIZZAS);
+  const [limit, setLimit] = React.useState(5);
+  const {
+    loading,
+    data,
+    error = loading === false && data === undefined ? true : false,
+  } = useQuery(GET_PIZZAS, {
+    variables: {
+      input: {
+        cursor: 'default',
+        limit,
+      },
+    },
+  });
+
+  const onClickBtn = () => {
+    setLimit((current) => current + 3);
+  };
 
   const [selectedPizza, setSeletedPizza] = React.useState<Partial<Pizza>>();
   const [open, setOpen] = React.useState(false);
@@ -46,7 +62,7 @@ const PizzaList: React.FC = () => {
     setOpen(true);
   };
 
-  const pizzaList = data?.pizzas?.map((pizza: Pizza) => (
+  const pizzaList = data?.pizzaResults.results.map((pizza: Pizza) => (
     <Grid item xs={12} sm={6} lg={4} key={pizza.id}>
       <PizzaItem data-testid={`pizza-item-${pizza?.id}`} key={pizza.id} pizza={pizza} handleOpen={handleOpen} />
     </Grid>
@@ -58,6 +74,7 @@ const PizzaList: React.FC = () => {
 
   return (
     <Container>
+      <div data-testid={`pizza-item-test`}></div>
       <PageHeader pageHeader={'Pizzas'} />
       <Grid container spacing={4}>
         <Grid item xs={12} sm={6} md={4} lg={4} key="add-pizza">
@@ -73,6 +90,7 @@ const PizzaList: React.FC = () => {
         toppings={toppings}
         setToppings={setToppings}
       />
+      <button onClick={onClickBtn}>see more pizzas...</button>
     </Container>
   );
 };

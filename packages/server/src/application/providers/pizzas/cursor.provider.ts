@@ -1,7 +1,7 @@
 // import { QueryResult } from "@apollo/client";
 import { Collection, ObjectId } from 'mongodb';
 import { PizzaDocument, toPizzaObject } from '../../../entities/pizza';
-import { GetCursorResultsInput, GetPizzasResponse } from './pizza.provider.types';
+import { CursorInput, GetPizzasResponse } from './pizza.provider.types';
 //23
 
 // import { toPizzaObject } from 'src/entities/pizza';
@@ -10,9 +10,7 @@ import { QueryResult } from '@apollo/client';
 import { pizzaProvider } from '..';
 
 class CursorProvider {
-  constructor(
-    private collection: Collection<PizzaDocument> // private toppingProvider: ToppingProvider, // private cursorProvider: CursorProvider
-  ) {}
+  constructor(private collection: Collection<PizzaDocument>) {}
 
   public async getCursorIndex(cursor: string): Promise<number> {
     if (cursor === null) return -1;
@@ -22,7 +20,7 @@ class CursorProvider {
     return pizzas.findIndex((element) => cursor === element._id.toHexString());
   }
 
-  public async getCursorResults({ limit, cursor, sort }: GetCursorResultsInput): Promise<any> {
+  public async getCursorResults({ limit, cursor, sort }: CursorInput): Promise<any> {
     let hasNextPage = false;
     const itemsToSkip = await this.getCursorIndex(cursor);
     const mongoDocuments = await this.collection

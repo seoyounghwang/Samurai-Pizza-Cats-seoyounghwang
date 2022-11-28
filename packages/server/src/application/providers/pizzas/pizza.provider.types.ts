@@ -26,7 +26,7 @@ export interface UpdatePizzaInput {
   toppingIds?: string[] | null;
 }
 
-export interface GetCursorResultsInput {
+export interface CursorInput {
   limit: number;
   cursor: string;
   sort: number;
