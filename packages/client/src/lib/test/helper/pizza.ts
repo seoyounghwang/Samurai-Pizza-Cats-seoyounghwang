@@ -7,6 +7,7 @@ export const createTestPizza = (data: Partial<Pizza> = {}): Pizza & { __typename
   name: 'A Pizza',
   description: 'Test Pizza Desc',
   imgSrc: 'test url',
+  toppingIds: [],
   priceCents: 0,
   toppings: [],
   ...data,

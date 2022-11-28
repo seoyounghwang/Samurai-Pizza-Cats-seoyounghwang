@@ -8,7 +8,6 @@ const typeDefs = gql`
     imgSrc: String!
     toppings: [Topping!]!
     priceCents: Int!
-    # test
     toppingIds: [ObjectID!]!
   }
   type Query {
@@ -44,7 +43,6 @@ const typeDefs = gql`
     imgSrc: String
     toppingIds: [ObjectID]
   }
-  # test
 
   type GetPizzasResponse {
     totalCount: Int
