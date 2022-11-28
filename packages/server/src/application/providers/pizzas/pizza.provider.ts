@@ -1,15 +1,91 @@
 import { Collection, ObjectId } from 'mongodb';
 import validateStringInputs from '../../../lib/string-validator';
 import { PizzaDocument, toPizzaObject } from '../../../entities/pizza';
-import { CreatePizzaInput, Pizza, UpdatePizzaInput } from './pizza.provider.types';
+import {
+  CreatePizzaInput,
+  GetCursorResultsInput,
+  GetPizzasResponse,
+  Pizza,
+  UpdatePizzaInput,
+} from './pizza.provider.types';
 import { ToppingProvider } from '../toppings/topping.provider';
+import { CursorProvider } from './cursor.provider';
+// import { pizzas } from 'scripts/initial-data';
 
 class PizzaProvider {
-  constructor(private collection: Collection<PizzaDocument>, private toppingProvider: ToppingProvider) {}
+  constructor(
+    private collection: Collection<PizzaDocument>,
+    private toppingProvider: ToppingProvider,
+    private cursorProvider: CursorProvider
+  ) {}
 
-  public async getPizzas(): Promise<Pizza[]> {
-    const pizzas = await this.collection.find().sort({ name: 1 }).toArray();
-    return pizzas.map(toPizzaObject);
+  /*   public async getPizzas(param: any): Promise<Pizza[]> {
+    if(param) {
+      const pizzas = await this.collection.find().sort({ name: 1 }).toArray();
+      return {
+        ...pizzas,
+        totalCount: pizzas.length,
+        hasNextPage: false,
+        results: pizzas.map(toPizzaObject),
+        cursor: null
+      };
+    } else {
+      const {cursor, limit} = param.input;
+      const {totalCount , hasNextPage, nextCursor, results} = await this.cursorProvider.getCursorResults({
+        cursor,
+        limit: limit ?? 10,
+      });
+
+    }
+
+    return {
+      ...pizzas,
+      totalCount: totalCount,
+      hasNextPage: hasNextPage,
+      cursor: nextCursor,
+      results: results.map(toPizzaObject),
+    };
+      
+    
+    // const pizzas = await this.collection.find().sort({ name: 1 }).toArray();
+    // return pizzas.map(toPizzaObject);
+  } */
+
+  public async getPizzas(input?: GetCursorResultsInput): Promise<GetPizzasResponse> {
+    // console.log(param);
+
+    if (!input) {
+      const data = await this.collection.find().sort({ name: 1 }).toArray();
+      return {
+        // ...data,
+        totalCount: data.length,
+        hasNextPage: false,
+        results: data.map(toPizzaObject),
+        cursor: null,
+      };
+    } else {
+      const { cursor, limit, sort } = input;
+
+      console.log(input);
+
+      const {
+        totalCount,
+        hasNextPage,
+        cursor: nextCursor,
+        results,
+      } = await this.cursorProvider.getCursorResults({
+        cursor,
+        limit: limit ?? 5,
+        sort,
+      });
+
+      return {
+        totalCount: totalCount,
+        hasNextPage: hasNextPage,
+        cursor: nextCursor,
+        results: results /* .map(toPizzaObject) */,
+      };
+    }
   }
 
   public async createPizza(input: CreatePizzaInput): Promise<Pizza> {

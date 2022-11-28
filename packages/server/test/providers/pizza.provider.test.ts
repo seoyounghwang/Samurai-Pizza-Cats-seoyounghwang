@@ -8,12 +8,20 @@ import { ToppingDocument } from '../../src/entities/topping';
 import { createMockPizzaDocument } from '../helpers/pizza.helper';
 import { createMockToppingDocument } from '../helpers/topping.helper';
 import { mockSortToArray } from '../helpers/mongo.helper';
+import { CursorProvider } from '../../src/application/providers/pizzas/cursor.provider';
 
 const stubPizzaCollection = stub<Collection<PizzaDocument>>();
 const stubToppingCollection = stub<Collection<ToppingDocument>>();
 
 const toppingProvider = new ToppingProvider(stubToppingCollection);
-const pizzaProvider = new PizzaProvider(stubPizzaCollection, toppingProvider);
+const cursorProvider = new CursorProvider(stubPizzaCollection);
+const pizzaProvider = new PizzaProvider(stubPizzaCollection, toppingProvider, cursorProvider);
+
+const CursorResultsInput = {
+  limit: 1,
+  cursor: 'empty',
+  sort: 0,
+};
 
 beforeEach(jest.clearAllMocks);
 
@@ -25,6 +33,7 @@ describe('pizzaProvider', (): void => {
     beforeEach(() => {
       reveal(stubPizzaCollection).find.mockImplementation(mockSortToArray([mockPizzaDocument]));
     });
+
     test('should call find once', async () => {
       await pizzaProvider.getPizzas();
 
@@ -33,8 +42,7 @@ describe('pizzaProvider', (): void => {
 
     test('should get all pizzas', async () => {
       const result = await pizzaProvider.getPizzas();
-
-      expect(result).toEqual([mockPizza]);
+      expect(result.results).toEqual([mockPizza]);
     });
   });
   describe('createPizza', (): void => {
@@ -44,7 +52,6 @@ describe('pizzaProvider', (): void => {
       description: 'test pizza desc',
       imgSrc: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x4.jpg',
       toppingIds: validTopping.id,
-      toppings: validTopping,
       priceCents: validTopping.priceCents,
     });
 
@@ -102,7 +109,7 @@ describe('pizzaProvider', (): void => {
       description: 'test pizza desc',
       imgSrc: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x4.jpg',
       toppingIds: validTopping.id,
-      toppings: validTopping,
+      // toppings: validTopping,
       priceCents: validTopping.priceCents,
     });
 

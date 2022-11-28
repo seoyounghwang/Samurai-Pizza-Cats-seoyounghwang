@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { Topping } from '../toppings/topping.provider.types';
 
 export interface Pizza {
   id: string;
@@ -6,6 +7,8 @@ export interface Pizza {
   description: string;
   toppingIds: ObjectId[];
   imgSrc: string;
+  toppings: Topping[];
+  priceCents?: number | null;
 }
 
 export interface CreatePizzaInput {
@@ -21,4 +24,17 @@ export interface UpdatePizzaInput {
   description?: string | null;
   imgSrc?: string | null;
   toppingIds?: string[] | null;
+}
+
+export interface GetCursorResultsInput {
+  limit: number;
+  cursor: string;
+  sort: number;
+}
+
+export interface GetPizzasResponse {
+  results: Pizza[];
+  cursor?: string | null;
+  hasNextPage: boolean;
+  totalCount?: number | null;
 }
