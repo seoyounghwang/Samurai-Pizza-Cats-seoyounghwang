@@ -27,7 +27,7 @@ export type CreateToppingInput = {
 };
 
 export type CursorInput = {
-  cursor?: InputMaybe<Scalars['String']>;
+  cursor?: InputMaybe<Scalars['ObjectID']>;
   limit?: InputMaybe<Scalars['Int']>;
   sort?: InputMaybe<Scalars['Int']>;
 };
@@ -45,7 +45,7 @@ export type GetPizzasResponse = {
   cursor?: Maybe<Scalars['String']>;
   hasNextPage: Scalars['Boolean'];
   results: Array<Pizza>;
-  totalCount: Scalars['Int'];
+  totalCount?: Maybe<Scalars['Int']>;
 };
 
 export type Mutation = {
@@ -89,6 +89,7 @@ export type Pizza = {
   imgSrc: Scalars['String'];
   name: Scalars['String'];
   priceCents: Scalars['Int'];
+  toppingIds: Array<Scalars['ObjectID']>;
   toppings: Array<Topping>;
 };
 
@@ -99,7 +100,7 @@ export type PizzaQueryArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  pizzaResults: Array<GetPizzasResponse>;
+  pizzaResults: GetPizzasResponse;
   pizzas: Array<Pizza>;
   toppings: Array<Topping>;
 };

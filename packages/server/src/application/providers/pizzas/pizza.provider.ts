@@ -51,7 +51,7 @@ class PizzaProvider {
     // return pizzas.map(toPizzaObject);
   } */
 
-  public async getPizzas(input: any): Promise<GetPizzasResponse> {
+  public async getPizzas(input?: GetCursorResultsInput): Promise<GetPizzasResponse> {
     // console.log(param);
 
     if (!input) {
@@ -68,9 +68,14 @@ class PizzaProvider {
 
       console.log(input);
 
-      const { totalCount, hasNextPage, nextCursor, results } = await this.cursorProvider.getCursorResults({
+      const {
+        totalCount,
+        hasNextPage,
+        cursor: nextCursor,
+        results,
+      } = await this.cursorProvider.getCursorResults({
         cursor,
-        limit: limit ?? 10,
+        limit: limit ?? 5,
         sort,
       });
 
@@ -78,7 +83,7 @@ class PizzaProvider {
         totalCount: totalCount,
         hasNextPage: hasNextPage,
         cursor: nextCursor,
-        results: results.map(toPizzaObject),
+        results: results /* .map(toPizzaObject) */,
       };
     }
   }

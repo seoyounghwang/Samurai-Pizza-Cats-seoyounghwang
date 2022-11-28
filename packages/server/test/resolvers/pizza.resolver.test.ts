@@ -7,9 +7,11 @@ import {
   MutationDeletePizzaArgs,
   MutationUpdatePizzaArgs,
 } from '../../src/application/schema/types/schema';
-import { createMockPizza } from '../helpers/pizza.helper';
+import { createMockPizza, createMockPizzaCursorResult } from '../helpers/pizza.helper';
 import { TestClient } from '../helpers/client.helper';
 import { createMockTopping } from '../helpers/topping.helper';
+import { resourceLimits } from 'worker_threads';
+import { ObjectId } from 'mongodb';
 
 let client: TestClient;
 
@@ -18,6 +20,7 @@ jest.mock('../../src/application/database', () => ({
 }));
 
 const mockPizza = createMockPizza();
+const GetPizzasResponse = createMockPizzaCursorResult();
 const mockTopping = createMockTopping();
 
 beforeAll(async (): Promise<void> => {
@@ -32,42 +35,54 @@ describe('pizzaResolver', (): void => {
   describe('Query', () => {
     describe('pizzas', () => {
       const query = gql`
-        query getPizzas {
-          pizzas {
-            id
-            name
-            description
-            imgSrc
-            toppings {
+        query PizzaResults($input: CursorInput) {
+          pizzaResults(input: $input) {
+            __typename
+            results {
+              __typename
               id
               name
+              description
+              imgSrc
               priceCents
+              toppingIds
+              toppings {
+                __typename
+                id
+                name
+                priceCents
+              }
             }
-            priceCents
+            totalCount
+            cursor
+            hasNextPage
           }
         }
       `;
+
       test('should get all pizzas', async () => {
-        jest
-          .spyOn(pizzaProvider, 'getPizzas')
-          .mockResolvedValue([{ ...mockPizza, toppingIds: mockPizza.toppings.map((topping) => topping.id) }]);
-        jest.spyOn(toppingProvider, 'getToppingsById').mockResolvedValue([mockTopping]);
-        jest.spyOn(toppingProvider, 'getPriceCents').mockResolvedValue(mockPizza.priceCents);
+        jest.spyOn(pizzaProvider, 'getPizzas').mockResolvedValue(GetPizzasResponse);
 
         const result = await client.query({ query });
-
         expect(result.data).toEqual({
-          pizzas: [
-            {
-              __typename: 'Pizza',
-              id: mockPizza.id,
-              name: mockPizza.name,
-              description: mockPizza.description,
-              imgSrc: mockPizza.imgSrc ?? mockPizza.imgSrc,
-              priceCents: mockPizza.priceCents,
-              toppings: [],
-            },
-          ],
+          pizzaResults: {
+            __typename: 'GetPizzasResponse',
+            results: [
+              {
+                __typename: 'Pizza',
+                id: '638425db4ddffd183e948b5c',
+                name: 'Lovey',
+                description: 'Jest pizza',
+                imgSrc: 'http://cm1.narvii.com/6874/bcc63b6b6fa12d68d8b0a8488de55282d701df4c_00.jpg',
+                priceCents: 250,
+                toppingIds: [],
+                toppings: [],
+              },
+            ],
+            totalCount: 1,
+            cursor: 'd48b39393f18c374818712c4',
+            hasNextPage: true,
+          },
         });
 
         expect(pizzaProvider.getPizzas).toHaveBeenCalledTimes(1);
@@ -107,7 +122,7 @@ describe('pizzaResolver', (): void => {
             name: validPizza.name,
             description: validPizza.description,
             imgSrc: validPizza.imgSrc,
-            toppingIds: validPizza.toppings.map((topping) => topping.id),
+            toppingIds: validPizza.toppingIds,
           },
         };
 
@@ -134,6 +149,7 @@ describe('pizzaResolver', (): void => {
             name: validPizza.name,
             description: validPizza.description,
             imgSrc: validPizza.imgSrc,
+            toppingIds: validPizza.toppingIds,
           },
         });
       });

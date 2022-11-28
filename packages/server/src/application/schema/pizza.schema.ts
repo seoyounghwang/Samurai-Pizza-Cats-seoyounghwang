@@ -8,9 +8,12 @@ const typeDefs = gql`
     imgSrc: String!
     toppings: [Topping!]!
     priceCents: Int!
+    # test
+    toppingIds: [ObjectID!]!
   }
   type Query {
     pizzas: [Pizza!]!
+    pizzaResults(input: CursorInput): GetPizzasResponse!
   }
 
   type PizzaQueryArgs {
@@ -44,18 +47,14 @@ const typeDefs = gql`
   # test
 
   type GetPizzasResponse {
-    totalCount: Int!
+    totalCount: Int
     hasNextPage: Boolean!
     cursor: String
     results: [Pizza!]!
   }
 
-  type Query {
-    pizzaResults(input: CursorInput): [GetPizzasResponse!]!
-  }
-
   input CursorInput {
-    cursor: String
+    cursor: ObjectID
     limit: Int
     sort: Int
   }
