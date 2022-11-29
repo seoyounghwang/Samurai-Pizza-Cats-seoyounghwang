@@ -26,8 +26,8 @@ import { GET_TOPPINGS } from '../../hooks/graphql/topping/queries/get-toppings';
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
   description: yup.string().required('Description is required'),
-  imgurl: yup.string().required('Img url is required'),
-  toppings: yup.array().required('Topping(s) is/are required'),
+  imgSrc: yup.string().required('Img url is required'),
+  toppingIds: yup.array().required('Topping(s) is/are required'),
 });
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -94,25 +94,21 @@ const PizzaModal = ({
       name: selectedPizza?.name,
       description: selectedPizza?.description,
       imgSrc: selectedPizza?.imgSrc,
-      toppings: selectedPizza?.toppings,
+      toppingIds: selectedPizza?.toppingIds,
     },
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
-      const { name, description, imgSrc, toppings } = values;
+      const { name, description, imgSrc, toppingIds } = values;
 
       let newPizza = {
-        // ...values,
         name: name,
         description: description,
         imgSrc: imgSrc ? imgSrc : '',
-        toppingIds: toppings,
+        toppingIds: toppingIds,
       };
-      // console.log(values);
-      // console.log(newPizza);
-
       selectedPizza?.id ? onUpdatePizza({ ...newPizza, id: selectedPizza.id }) : onCreatePizza(newPizza);
-
+      setToppings([]);
       setOpen(false);
     },
   });
@@ -126,7 +122,7 @@ const PizzaModal = ({
       target: { value },
     } = event;
     setToppings(typeof value === 'string' ? value.split(',').toString() : value);
-    formik.values.toppings = value;
+    formik.values.toppingIds = value;
   };
 
   return (
@@ -135,7 +131,10 @@ const PizzaModal = ({
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={open}
-      onClose={(): void => setOpen(false)}
+      onClose={(): void => {
+        setOpen(false);
+        setToppings([]);
+      }}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
@@ -197,7 +196,7 @@ const PizzaModal = ({
                 value={toppings}
                 defaultValue={selectedPizza?.toppings.map((topping: any) => topping.name)}
                 input={<OutlinedInput label="Toppings" />}
-                error={formik.touched.toppings && Boolean(formik.errors.toppings)}
+                error={formik.touched.toppingIds && Boolean(formik.errors.toppingIds)}
                 onChange={(e): void => {
                   handleChange(e);
                 }}

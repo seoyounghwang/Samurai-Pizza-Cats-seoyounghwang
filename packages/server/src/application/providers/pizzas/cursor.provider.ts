@@ -1,11 +1,6 @@
-// import { QueryResult } from "@apollo/client";
 import { Collection, ObjectId } from 'mongodb';
 import { PizzaDocument, toPizzaObject } from '../../../entities/pizza';
 import { CursorInput, GetPizzasResponse } from './pizza.provider.types';
-//23
-
-// import { toPizzaObject } from 'src/entities/pizza';
-// import { ToppingProvider } from "../toppings/topping.provider";
 import { QueryResult } from '@apollo/client';
 import { pizzaProvider } from '..';
 

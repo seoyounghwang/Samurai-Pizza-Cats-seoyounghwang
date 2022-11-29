@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { Card, Container, createStyles, Grid, List, ListItem, makeStyles, Theme } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import { GET_PIZZAS } from '../../hooks/graphql/pizza/queries/get-pizzas';
 import { Pizza, Topping } from '../../types';
 import CardItemSkeleton from '../common/CardItemSkeleton';
@@ -8,28 +8,9 @@ import PizzaItem from './PizzaItem';
 import PizzaModal from './PizzaModal';
 import PageHeader from '../common/PageHeader';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: theme.typography.pxToRem(400),
-      height: theme.typography.pxToRem(600),
-    },
-    title: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    img: {
-      display: 'flex',
-      width: theme.typography.pxToRem(350),
-      height: theme.typography.pxToRem(350),
-    },
-  })
-);
-
 const PizzaList: React.FC = () => {
-  const classes = useStyles();
   const [limit, setLimit] = React.useState(5);
+  const [hasNextPage, setHasNextPage] = React.useState(true);
   const {
     loading,
     data,
@@ -43,21 +24,23 @@ const PizzaList: React.FC = () => {
     },
   });
 
-  const onClickBtn = () => {
+  const onClickBtn = (): void => {
+    console.log(data?.pizzaResults.results.length);
     setLimit((current) => current + 3);
+    if (limit > data?.pizzaResults.results.length) setHasNextPage(false);
   };
 
   const [selectedPizza, setSeletedPizza] = React.useState<Partial<Pizza>>();
   const [open, setOpen] = React.useState(false);
   const [toppings, setToppings] = React.useState<Topping[]>([]);
 
+  React.useEffect(() => {}, [limit]);
+
   if (error === true) {
     return <div>Error Occured</div>;
   }
 
   const handleOpen = (pizza?: Pizza): void => {
-    console.log('select pizza function');
-    console.log(pizza);
     setSeletedPizza(pizza);
     setOpen(true);
   };
@@ -90,7 +73,7 @@ const PizzaList: React.FC = () => {
         toppings={toppings}
         setToppings={setToppings}
       />
-      <button onClick={onClickBtn}>see more pizzas...</button>
+      {hasNextPage ? <button onClick={onClickBtn}>see more pizzas...</button> : null}
     </Container>
   );
 };
