@@ -8,7 +8,7 @@ import {
 import { pizzaProvider } from '../providers';
 import { Root } from '../schema/types/types';
 import { ObjectId } from 'mongodb';
-import { GetCursorResultsInput } from '../providers/pizzas/pizza.provider.types';
+import { CursorInput } from '../providers/pizzas/pizza.provider.types';
 
 export type Pizza = Omit<PizzaSchema, 'toppings' | 'priceCents'> & {
   toppingIds: ObjectId[];
@@ -19,18 +19,10 @@ export type GetPizzasResponse = Omit<SchemaGetPizzasResponse, 'results'> & {
 };
 
 const pizzaResolver = {
-  /* Query: {
-    pizzas: async (): Promise<Pizza[]> => {
-      return pizzaProvider.getPizzas();
-    },
-  }, */
-
-  // const pizzaResolver = {
   Query: {
-    pizzaResults: async (_: Root, args: { input?: GetCursorResultsInput }): Promise<GetPizzasResponse> => {
-      // return pizzaProvider.getPizzas(args.input);
-      const cursor = args.input?.cursor !== undefined ? args.input.cursor : 'empty';
-      const limit = args.input?.limit !== undefined ? args.input.limit : 0;
+    pizzaResults: async (_: Root, args: { input?: CursorInput }): Promise<GetPizzasResponse> => {
+      const cursor: string = args.input?.cursor !== undefined ? args.input.cursor : 'test';
+      const limit: number = args.input?.limit !== undefined ? args.input.limit : 0;
       const sort = args.input?.sort !== undefined ? args.input.sort : 0;
       const result = await pizzaProvider.getPizzas({
         limit: limit,

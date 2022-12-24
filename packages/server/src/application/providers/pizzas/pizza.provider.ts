@@ -1,16 +1,9 @@
 import { Collection, ObjectId } from 'mongodb';
 import validateStringInputs from '../../../lib/string-validator';
 import { PizzaDocument, toPizzaObject } from '../../../entities/pizza';
-import {
-  CreatePizzaInput,
-  GetCursorResultsInput,
-  GetPizzasResponse,
-  Pizza,
-  UpdatePizzaInput,
-} from './pizza.provider.types';
+import { CreatePizzaInput, CursorInput, GetPizzasResponse, Pizza, UpdatePizzaInput } from './pizza.provider.types';
 import { ToppingProvider } from '../toppings/topping.provider';
 import { CursorProvider } from './cursor.provider';
-// import { pizzas } from 'scripts/initial-data';
 
 class PizzaProvider {
   constructor(
@@ -19,54 +12,45 @@ class PizzaProvider {
     private cursorProvider: CursorProvider
   ) {}
 
-  /*   public async getPizzas(param: any): Promise<Pizza[]> {
-    if(param) {
+  public async getPizzas(input?: CursorInput): Promise<GetPizzasResponse> {
+    if (!input) {
+      input = {
+        cursor: 'test',
+        limit: 0,
+        sort: 0,
+      };
+    }
+    const { cursor, limit } = input;
+
+    if (cursor === 'test') {
       const pizzas = await this.collection.find().sort({ name: 1 }).toArray();
       return {
-        ...pizzas,
+        results: pizzas.map(toPizzaObject),
         totalCount: pizzas.length,
         hasNextPage: false,
-        results: pizzas.map(toPizzaObject),
-        cursor: null
+        cursor: '',
       };
-    } else {
-      const {cursor, limit} = param.input;
-      const {totalCount , hasNextPage, nextCursor, results} = await this.cursorProvider.getCursorResults({
-        cursor,
-        limit: limit ?? 10,
-      });
-
+    } else if (cursor === 'default') {
+      const pizzas = await this.collection.find().sort({ name: 1 }).limit(limit).toArray();
+      const nextCursor = pizzas[limit - 1].id;
+      return {
+        results: pizzas.map(toPizzaObject),
+        totalCount: pizzas.length,
+        hasNextPage: false,
+        cursor: nextCursor,
+      };
     }
 
-    return {
-      ...pizzas,
-      totalCount: totalCount,
-      hasNextPage: hasNextPage,
-      cursor: nextCursor,
-      results: results.map(toPizzaObject),
-    };
-      
-    
-    // const pizzas = await this.collection.find().sort({ name: 1 }).toArray();
-    // return pizzas.map(toPizzaObject);
-  } */
-
-  public async getPizzas(input?: GetCursorResultsInput): Promise<GetPizzasResponse> {
-    // console.log(param);
-
-    if (!input) {
-      const data = await this.collection.find().sort({ name: 1 }).toArray();
-      return {
-        // ...data,
-        totalCount: data.length,
-        hasNextPage: false,
-        results: data.map(toPizzaObject),
-        cursor: null,
-      };
-    } else {
+    //   const data = await this.collection.find().sort({ name: 1 }).toArray();
+    //   return {
+    //     totalCount: data.length,
+    //     hasNextPage: false,
+    //     results: data.map(toPizzaObject),
+    //     cursor: null,
+    //   };
+    // }
+    else {
       const { cursor, limit, sort } = input;
-
-      console.log(input);
 
       const {
         totalCount,
@@ -75,7 +59,7 @@ class PizzaProvider {
         results,
       } = await this.cursorProvider.getCursorResults({
         cursor,
-        limit: limit ?? 5,
+        limit,
         sort,
       });
 
@@ -83,7 +67,7 @@ class PizzaProvider {
         totalCount: totalCount,
         hasNextPage: hasNextPage,
         cursor: nextCursor,
-        results: results /* .map(toPizzaObject) */,
+        results: results,
       };
     }
   }

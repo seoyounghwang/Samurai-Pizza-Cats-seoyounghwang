@@ -12,12 +12,14 @@ interface UsePizzaMutationsOutput {
 }
 
 const usePizzaMutations = (): UsePizzaMutationsOutput => {
-  const [createPizza] = useMutation(CREATE_PIZZA, { refetchQueries: [GET_PIZZAS, 'Pizzas'] });
-  const [deletePizza] = useMutation(DELETE_PIZZA, { refetchQueries: [GET_PIZZAS, 'Pizzas'] });
+  const [createPizza] = useMutation(CREATE_PIZZA, { refetchQueries: [GET_PIZZAS, 'PizzaResults'] });
+  const [deletePizza] = useMutation(DELETE_PIZZA, { refetchQueries: [GET_PIZZAS, 'PizzaResults'] });
   const [updatePizza] = useMutation(UPDATE_PIZZA);
 
   const onCreatePizza = useCallback(
     (selectedPizza) => {
+      console.log('createpizza in');
+      console.log(selectedPizza);
       try {
         createPizza({
           variables: {
